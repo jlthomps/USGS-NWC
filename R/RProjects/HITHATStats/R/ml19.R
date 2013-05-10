@@ -13,16 +13,16 @@
 #' qfiletempf<-read.csv(load_data)
 #' ml19(qfiletempf)
 ml19 <- function(qfiletempf, pref = "mean") {
-  minbyyr <- aggregate(qfiletempf$discharge,list(qfiletempf$year_val),FUN=min,na.rm=TRUE)
+  minbyyr <- aggregate(qfiletempf$discharge,list(qfiletempf$wy_val),FUN=min,na.rm=TRUE)
   colnames(minbyyr) <- c("Year","yrmin")
-  meanbyyr <- aggregate(qfiletempf$discharge,list(qfiletempf$year_val),FUN=mean,na.rm=TRUE)
+  meanbyyr <- aggregate(qfiletempf$discharge,list(qfiletempf$wy_val),FUN=mean,na.rm=TRUE)
   colnames(meanbyyr) <- c("Year","yrmean")
-  ratiominmean <- (minbyyr$yrmin/meanbyyr$yrmean)*100
+  ratiominmean <- (minbyyr$yrmin/meanbyyr$yrmean)
   if (pref == "median") {
-    ml19 <- median(ratiominmean)
+    ml19 <- median(ratiominmean)*100
   }
   else {
-    ml19 <- mean(ratiominmean)
+    ml19 <- mean(ratiominmean)*100
   }
   return(ml19)
 }

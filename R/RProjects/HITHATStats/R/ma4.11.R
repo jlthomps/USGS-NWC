@@ -48,32 +48,11 @@ ma4.11<-function(x) {
   percentiles[19] <- sortq[floor(findrank(length(sortq), 0.95))]
   mean <- mean(percentiles,na.rm=TRUE)
   sdev <- sd(percentiles, na.rm=TRUE)
-  ma4 <- sdev/mean*100
+  ma4 <- (sdev/mean)*100
   ma5 <- ma1(x)/ma2(x)
   ma6 <- percentiles[2]/percentiles[18]
   ma7 <- percentiles[4]/percentiles[16]
   ma8 <- percentiles[5]/percentiles[15]
-  sortqLog <- sort(log10(isolateq))
-  percentilesLog<-vector(length=19)
-  percentilesLog[1] <- sortqLog[floor(findrank(length(sortq), 0.05))]  
-  percentilesLog[2] <- sortqLog[floor(findrank(length(sortq), 0.1))]
-  percentilesLog[3] <- sortqLog[floor(findrank(length(sortq), 0.15))]
-  percentilesLog[4] <- sortqLog[floor(findrank(length(sortq), 0.2))]
-  percentilesLog[5] <- sortqLog[floor(findrank(length(sortq), 0.25))]
-  percentilesLog[6] <- sortqLog[floor(findrank(length(sortq), 0.3))]
-  percentilesLog[7] <- sortqLog[floor(findrank(length(sortq), 0.35))]
-  percentilesLog[8] <- sortqLog[floor(findrank(length(sortq), 0.4))]
-  percentilesLog[9] <- sortqLog[floor(findrank(length(sortq), 0.45))]
-  percentilesLog[10] <- sortqLog[floor(findrank(length(sortq), 0.5))]
-  percentilesLog[11] <- sortqLog[floor(findrank(length(sortq), 0.55))]
-  percentilesLog[12] <- sortqLog[floor(findrank(length(sortq), 0.6))]
-  percentilesLog[13] <- sortqLog[floor(findrank(length(sortq), 0.65))]
-  percentilesLog[14] <- sortqLog[floor(findrank(length(sortq), 0.7))]
-  percentilesLog[15] <- sortqLog[floor(findrank(length(sortq), 0.75))]
-  percentilesLog[16] <- sortqLog[floor(findrank(length(sortq), 0.8))]
-  percentilesLog[17] <- sortqLog[floor(findrank(length(sortq), 0.85))]
-  percentilesLog[18] <- sortqLog[floor(findrank(length(sortq), 0.9))]
-  percentilesLog[19] <- sortqLog[floor(findrank(length(sortq), 0.95))]
   ma9 <- (percentiles[2]-percentiles[18])/ma2(x)
   ma10 <- (percentiles[4]-percentiles[16])/(ma2(x))
   ma11 <- (percentiles[5]-percentiles[15])/(ma2(x))

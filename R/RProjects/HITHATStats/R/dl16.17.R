@@ -19,24 +19,23 @@ dl16.17 <- function(qfiletempf) {
                        FUN = median, na.rm=TRUE)
   colnames(noyears) <- c("Year", "momax")
   noyrs <- length(noyears$Year)
-  dur <- data.frame(Year = rep(0,nrow(qfiletempf)), dur = rep(1,nrow(qfiletempf)))
-  nevents <- 0
+  lfdur <- rep(0,noyrs)
   for (i in 1:noyrs) {
     subsetyr <- subset(qfiletempf, as.numeric(qfiletempf$wy_val) == noyears$Year[i])
     flag <- 0
+    pdur <- 0
+    nevents <- 0
     for (j in 1:nrow(subsetyr)) {
       if (subsetyr$discharge[j]<lfcrit) {
         flag <- flag+1
         nevents <- ifelse(flag==1,nevents+1,nevents)
-        dur$Year[nevents] <- subsetyr$wy_val[j]
-        dur$dur[nevents] <- dur$dur[nevents]+1
+        pdur <- pdur+1
       } else {flag <- 0}
     }
+    if (nevents>0) {lfdur[i]<-pdur/nevents}
   }
-  subset_dur <- dur[1:nevents ,]
-  meanbyyr <- aggregate(subset_dur$dur, list(subset_dur$Year), mean)
-  dl16 <- median(meanbyyr$x)
-  dl17 <- sd(meanbyyr$x)*100/mean(meanbyyr$x)
+  dl16 <- median(lfdur)
+  dl17 <- (sd(lfdur)*100)/mean(lfdur)
   dl16.17 <- list(dl16=dl16,dl17=dl17)
   return(dl16.17)
 }

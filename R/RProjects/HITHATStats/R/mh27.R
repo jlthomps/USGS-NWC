@@ -22,11 +22,10 @@ mh27 <- function(qfiletempf) {
   colnames(noyears) <- c("Year", "momax")
   noyrs <- length(noyears$Year)
   peak <- rep(0,nrow(qfiletempf))
-  nevents <- 1
+  nevents <- 0
+  flag <- 0
   for (i in 1:noyrs) {
     subsetyr <- subset(qfiletempf, as.numeric(qfiletempf$wy_val) == noyears$Year[i])
-    flag <- 0
-    peak[i] <- 0
     for (j in 1:nrow(subsetyr)) {
       if (subsetyr$discharge[j]>hfcrit75) {
         flag <- flag+1

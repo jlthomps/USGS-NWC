@@ -18,12 +18,21 @@ ra8.9 <- function(qfiletempf) {
     subq <- subset(qfiletempf,qfiletempf$wy_val==noyears$wy_val[j])
     counter <- 0
     sub_length <- nrow(subq)-1
-    for (i in 2:sub_length) {
-      if (subq$discharge[i+1]-subq$discharge[i]<0 && subq$discharge[i]-subq$discharge[i-1]>0) {
-        counter <- counter+1
-      } else if (subq$discharge[i+1]-subq$discharge[i]>0 && subq$discharge[i]-subq$discharge[i-1]<0) {
-        counter <- counter+1
-      } else {counter<-counter}
+    for (i in 1:sub_length) {
+      temp <- subq$discharge[i+1] - subq$discharge[i]
+      if (i==0) {
+        flag <- 0
+        if (temp>0) flag<-1
+        if (temp<0) flag<-2
+      }
+      if (i>0 && temp>0) {
+        if (flag==2) counter <- counter+1
+        flag <- 1
+      }
+      if (i>0 && temp<0) {
+        if (flag==1) counter <- counter+1
+        flag <- 2
+      }
     }
     noyears$cnt[j] <- counter
   }

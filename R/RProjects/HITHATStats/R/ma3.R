@@ -23,7 +23,7 @@ ma3 <- function(qfiletempf, pref = "mean") {
   dfcvbyyr <- data.frame(meanbyyr$Year, sdbyyr$sdq, 
                          meanbyyr$meanq)
   colnames(dfcvbyyr) <- c("Year", "sdq", "meanq")
-  cvbyyr <- dfcvbyyr$sdq/dfcvbyyr$meanq
+  cvbyyr <- dfcvbyyr$sdq/ma1(qfiletempf)
   dfcvbyyrf <- data.frame(dfcvbyyr, cvbyyr)
   colnames(dfcvbyyrf) <- c("Year", "sdq", "meanq", 
                            "cvq")

@@ -18,18 +18,18 @@
 #' get_obsdata(x_obs)
 get_obsdata <- function(x_obs) {
 x2<-(x_obs$date)
-x_obs<-data.frame(x2,x_obs$discharge)
+x_obs<-data.frame(x2,x_obs$discharge,stringsAsFactors=FALSE)
 colnames(x_obs)<-c("date","discharge")
 selqfile<-x_obs
 tempdatafr<-NULL
-tempdatafr<-data.frame(selqfile)
+tempdatafr<-data.frame(selqfile,stringsAsFactors=FALSE)
 month_val<-rep(0,length(tempdatafr$date))
 year_val<-rep(0,length(tempdatafr$date))
 day_val<-rep(0,length(tempdatafr$date))
 jul_val<-rep(0,length(tempdatafr$date))
 wy_val<-rep(0,length(tempdatafr$date))
 ones_val<-rep(1,length(tempdatafr$date))
-qfiletempf<-data.frame(tempdatafr$date,tempdatafr$discharge,month_val,year_val,day_val,jul_val,wy_val)
+qfiletempf<-data.frame(tempdatafr$date,tempdatafr$discharge,month_val,year_val,day_val,jul_val,wy_val,stringsAsFactors=FALSE)
 colnames(qfiletempf)<-c('date','discharge','month_val','year_val','day_val','jul_val','wy_val')
 qfiletempf$month_val<-substr(x_obs$date,6,7)
 qfiletempf$year_val<-substr(x_obs$date,1,4)
