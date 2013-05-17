@@ -4,17 +4,15 @@
 #' calculates the seasonal predictability of floods above the 60th percentile for the entire record
 #' 
 #' @param qfiletempf data frame containing a "discharge" column containing daily flow values
+#' @param thresh numeric containing 1.67-year flood threshold calculated by getPeakThresh
 #' @return ta3 numeric containing the max floods in a period over total floods for the given data frame
 #' @export
 #' @examples
 #' load_data<-paste(system.file(package="HITHATStats"),"/data/obs_data.csv",sep="")
 #' qfiletempf<-read.csv(load_data)
 #' ta3(qfiletempf)
-ta3 <- function(qfiletempf) {
-  isolateq <- qfiletempf$discharge
-  sortq <- sort(isolateq)
-  frank <- floor(findrank(length(sortq), 0.40))
-  lfcrit <- sortq[frank]
+ta3 <- function(qfiletempf, thresh) {
+  lfcrit <- thresh
   nomonyears <- aggregate(qfiletempf$discharge, list(qfiletempf$wy_val,qfiletempf$month_val), 
                        FUN = median, na.rm=TRUE)
   colnames(nomonyears) <- c("Year","month", "momax")

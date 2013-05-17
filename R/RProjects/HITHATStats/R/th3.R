@@ -4,17 +4,15 @@
 #' calculates the predictability of flow below the 60th percentile for the entire record
 #' 
 #' @param qfiletempf data frame containing a "discharge" column containing daily flow values
+#' @param thresh numeric containing 1.67-year flood threshold calculated by getPeakThresh
 #' @return tl4 numeric containing the ratio of maximum duration across years of flow below the 60th pctl to days in the year for the given data frame
 #' @export
 #' @examples
 #' load_data<-paste(system.file(package="HITHATStats"),"/data/obs_data.csv",sep="")
 #' qfiletempf<-read.csv(load_data)
 #' th3(qfiletempf)
-th3 <- function(qfiletempf) {
-  isolateq <- qfiletempf$discharge
-  sortq <- sort(isolateq)
-  frank <- floor(findrank(length(sortq), 0.40))
-  lfcrit <- sortq[frank]
+th3 <- function(qfiletempf, thresh) {
+  lfcrit <- thresh
   qfiletempf$diff <- (qfiletempf$discharge-lfcrit)
   jul_day_sum <- aggregate(qfiletempf$diff, list(qfiletempf$jul_val), sum)
   maxdur <- rep(0,nrow(jul_day_sum))

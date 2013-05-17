@@ -2,14 +2,11 @@
 \alias{th1.2}
 \title{Function to return the TH1 and TH2 hydrologic indicator statistics for a given data frame}
 \usage{
-  th1.2(qfiletempf, pref = "mean")
+  th1.2(qfiletempf)
 }
 \arguments{
   \item{qfiletempf}{data frame containing a "discharge"
   column containing daily flow values}
-
-  \item{pref}{string containing a "mean" or "median"
-  preference}
 }
 \value{
   th1.2 list containing the mean and variability of the

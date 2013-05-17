@@ -4,29 +4,39 @@
 #' calculates the mean and variability of the Julian date of the annual minimum flow for the entire record
 #' 
 #' @param qfiletempf data frame containing a "discharge" column containing daily flow values
-#' @param pref string containing a "mean" or "median" preference
 #' @return tl1.2 list containing the mean and variability of the Julian date of the annual minimum flow  for the given data frame
 #' @export
 #' @examples
 #' load_data<-paste(system.file(package="HITHATStats"),"/data/obs_data.csv",sep="")
 #' qfiletempf<-read.csv(load_data)
 #' tl1.2(qfiletempf)
-tl1.2 <- function(qfiletempf, pref = "mean") {
+tl1.2 <- function(qfiletempf) {
   min1daybyyear <- aggregate(qfiletempf$discharge, 
                              list(qfiletempf$wy_val), min, na.rm=TRUE)
   colnames(min1daybyyear) <- c("wy_val","discharge")
-  minjulbyyear <- aggregate(qfiletempf$jul_val, list(qfiletempf$wy_val,qfiletempf$discharge),min,na.rm=TRUE)
+  qfiletempf$wy_day_val <- ifelse(qfiletempf$jul_val>=274,qfiletempf$jul_val-273,qfiletempf$jul_val+92)
+  minjulbyyear <- aggregate(qfiletempf$wy_day_val, list(qfiletempf$wy_val,qfiletempf$discharge),min,na.rm=TRUE)
   colnames(minjulbyyear) <- c("wy_val","discharge","jul_val")
   minjulday <- merge(minjulbyyear,min1daybyyear,by = c("wy_val","discharge"))
-  meantl2<-mean(minjulday$jul_val)
-  sddtl2<-sd(minjulday$jul_val)
-  tl2<-(sddtl2*100)/meantl2
-  if (pref == "median") {
-    tl1 <- median(minjulday$jul_val)
+  minjulday$jul_val <- ifelse(minjulday$jul_val<=92,minjulday$jul_val+274,minjulday$jul_val-92)
+  minjulday$np <- cos(minjulday$jul_val*2*pi/365.25)
+  minjulday$mdata <- sin(minjulday$jul_val*2*pi/365.25)
+  xbar <- mean(minjulday$np)
+  ybar <- mean(minjulday$mdata)
+  if (xbar>0) {
+    tl1_temp <- atan(ybar/xbar)*180/pi
+  } else if (xbar<0) {
+    tl1_temp <- (atan(ybar/xbar)*180/pi)+180
+  } else if (xbar==0 && ybar>0) {
+    tl1_temp <- 90
+  } else if (xbar==0 && ybar<0) {
+    tl1_temp <- 270
   }
-  else {
-    tl1 <- mean(minjulday$jul_val)
-  }
+  tl1_temp <- ifelse(tl1_temp<0,tl1_temp+360,tl1_temp)
+  tl1 <- tl1_temp*365.25/360
+  tl2_a <- sqrt((xbar*xbar)+(ybar*ybar))
+  tl2_b <- sqrt(2*(1-tl2_a))
+  tl2 <- tl2_b*180/pi/360*365.25
   tl1.2<-list(tl1=tl1,tl2=tl2)
   return(tl1.2)
 }
