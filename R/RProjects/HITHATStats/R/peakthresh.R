@@ -14,10 +14,9 @@
 #' peakValues<-getPeakData(sites)
 #' getPeakThresh(obs_data,peakValues)
 getPeakThresh <- function(obs_data,peakValues) {
-peakDaily <- aggregate(obs_data$discharge,list(obs_data$wy_val),max)
-colnames(peakDaily) <- c("wy_val","discharge")
-peakInst <- peakValues[as.numeric(peakValues$wy_val)>=min(as.numeric(peakDaily$wy_val)) & as.numeric(peakValues$wy_val)<=max(as.numeric(peakDaily$wy_val)),]
+peakDaily <- obs_data[obs_data$date %in% peakValues$date,]
 peakDaily$logval <- log10(peakDaily$discharge)
+peakInst <- peakValues[as.numeric(peakValues$wy_val)>=min(as.numeric(peakDaily$wy_val)) & as.numeric(peakValues$wy_val)<=max(as.numeric(peakDaily$wy_val)),]
 dailyMean <- mean(peakDaily$logval)
 instMean <- mean(peakInst$logval)
 num <- sum((peakDaily$logval-dailyMean)*(peakInst$logval-instMean))
