@@ -20,16 +20,16 @@ ra8.9 <- function(qfiletempf) {
     sub_length <- nrow(subq)-1
     for (i in 1:sub_length) {
       temp <- subq$discharge[i+1] - subq$discharge[i]
-      if (i==0) {
+      if (i==1) {
         flag <- 0
         if (temp>0) flag<-1
         if (temp<0) flag<-2
       }
-      if (i>0 && temp>0) {
+      if (i>1 && temp>0) {
         if (flag==2) counter <- counter+1
         flag <- 1
       }
-      if (i>0 && temp<0) {
+      if (i>1 && temp<0) {
         if (flag==1) counter <- counter+1
         flag <- 2
       }
