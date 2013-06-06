@@ -1,13 +1,13 @@
 # Build the package:
 library(devtools)
-setwd("C:/Users/jlthomps/Desktop/git/USGS-NWC/R/RProjects/")
+setwd("C:/Users/jlthomps/Desktop/git")
 load_all("HITHATStats/",reset = TRUE)
-setwd("C:/Users/jlthomps/Desktop/git/USGS-NWC/R/RProjects/HITHATStats")
+setwd("C:/Users/jlthomps/Desktop/git/HITHATStats")
 document()
 check()  
 run_examples()
 # test()   Assumes testthat type tests in GLRI/inst/tests
-setwd("C:/Users/jlthomps/Desktop/git/USGS-NWC/R/RProjects/")
+setwd("C:/Users/jlthomps/Desktop/git/")
 build("HITHATStats")
 install("HITHATStats")
 
